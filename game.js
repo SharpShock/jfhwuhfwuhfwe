@@ -376,7 +376,7 @@ function createWiresModule(id) {
     const correctWire = calculateCorrectWire(wires);
     
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-wires';
     moduleDiv.innerHTML = `
         <div class="module-title">Simple Wires</div>
         <div class="wires-container" data-module-id="${id}"></div>
@@ -482,7 +482,7 @@ function createButtonModule(id) {
     const stripColor = ['blue', 'white', 'yellow', 'red'][Math.floor(Math.random() * 4)];
     
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-button';
     moduleDiv.innerHTML = `
         <div class="module-title">The Button</div>
         <div class="button-container">
@@ -584,7 +584,7 @@ function createKeypadsModule(id) {
     const displaySymbols = [...symbols].sort(() => Math.random() - 0.5);
     
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-keypads';
     moduleDiv.innerHTML = `
         <div class="module-title">Keypads</div>
         <div class="keypads-container" data-module-id="${id}"></div>
@@ -639,7 +639,7 @@ function createKeypadsModule(id) {
 // Simon Says Module
 function createSimonModule(id) {
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-simon';
     moduleDiv.innerHTML = `
         <div class="module-title">Simon Says</div>
         <div class="simon-container" data-module-id="${id}">
@@ -764,7 +764,7 @@ function createWhosOnFirstModule(id) {
     const shuffledButtons = [...buttonWords].sort(() => Math.random() - 0.5);
     
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-whosonfirst';
     moduleDiv.innerHTML = `
         <div class="module-title">Who's On First</div>
         <div class="whosonfirst-container">
@@ -828,7 +828,7 @@ function getWhosOnFirstAnswer(displayWord, availableButtons) {
 // Memory Module
 function createMemoryModule(id) {
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-memory';
     moduleDiv.innerHTML = `
         <div class="module-title">Memory</div>
         <div class="memory-container">
@@ -960,7 +960,7 @@ function createMorseModule(id) {
     };
     
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-morse';
     moduleDiv.innerHTML = `
         <div class="module-title">Morse Code</div>
         <div class="morse-container">
@@ -1053,7 +1053,7 @@ function createComplexWiresModule(id) {
     }
     
     const moduleDiv = document.createElement('div');
-    moduleDiv.className = 'module';
+    moduleDiv.className = 'module module-complex-wires';
     moduleDiv.innerHTML = `
         <div class="module-title">Complicated Wires</div>
         <div class="complex-wires-container" data-module-id="${id}"></div>
