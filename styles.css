@@ -451,13 +451,29 @@ body {
 }
 
 .module {
-    background: #1a1a1a;
-    border: 3px solid #555;
+    --module-accent: #9fd7ff;
+    --module-pattern: linear-gradient(135deg, #1a1a1a 0%, #111 100%);
+    background-image:
+        radial-gradient(circle at 14px 14px, #777 0 4px, transparent 5px),
+        radial-gradient(circle at calc(100% - 14px) 14px, #777 0 4px, transparent 5px),
+        radial-gradient(circle at 14px calc(100% - 14px), #777 0 4px, transparent 5px),
+        radial-gradient(circle at calc(100% - 14px) calc(100% - 14px), #777 0 4px, transparent 5px),
+        var(--module-pattern);
+    border: 3px solid #4a4a4a;
     border-radius: 8px;
-    padding: 20px;
+    padding: 55px 20px 20px;
     min-height: 250px;
     position: relative;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 10px 18px rgba(0, 0, 0, 0.4);
+}
+
+.module::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    pointer-events: none;
 }
 
 .module.solved {
@@ -477,26 +493,75 @@ body {
 }
 
 .module-title {
-    font-size: 1.2em;
-    color: #4af;
-    margin-bottom: 15px;
+    font-size: 0.75em;
+    color: var(--module-accent);
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    border-radius: 4px;
+    background: #0b0b0b;
+    border: 1px solid var(--module-accent);
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.05), 0 2px 4px rgba(0, 0, 0, 0.6);
     white-space: nowrap;
-    border: 0;
+    z-index: 1;
 }
 
 .module.solved .module-title::after {
     content: ' ✓';
     color: #0f0;
+}
+
+.module-wires {
+    --module-accent: #ff7a7a;
+    --module-pattern: linear-gradient(140deg, #1f1f1f 0%, #141414 100%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 8px);
+}
+
+.module-button {
+    --module-accent: #ffd66b;
+    --module-pattern: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.05), transparent 55%),
+        linear-gradient(135deg, #1d1d1d 0%, #121212 100%);
+}
+
+.module-keypads {
+    --module-accent: #8be2ff;
+    --module-pattern: linear-gradient(135deg, #1b1b1b 0%, #101010 100%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0 3px, transparent 3px 9px);
+}
+
+.module-simon {
+    --module-accent: #7cffb5;
+    --module-pattern: radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 60%),
+        linear-gradient(135deg, #1a1a1a 0%, #0e0e0e 100%);
+}
+
+.module-whosonfirst {
+    --module-accent: #b89bff;
+    --module-pattern: linear-gradient(135deg, #1a1a1a 0%, #111 100%),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 6px);
+}
+
+.module-memory {
+    --module-accent: #ffb37a;
+    --module-pattern: linear-gradient(135deg, #1b1b1b 0%, #121212 100%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 6px);
+}
+
+.module-morse {
+    --module-accent: #7fd4ff;
+    --module-pattern: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%),
+        repeating-radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 8px);
+}
+
+.module-complex-wires {
+    --module-accent: #ff8fe6;
+    --module-pattern: linear-gradient(135deg, #1f1f1f 0%, #121212 100%),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0 3px, transparent 3px 8px);
 }
 
 /* Wire Module */
@@ -514,6 +579,20 @@ body {
     position: relative;
     transition: all 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.wire::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 14px;
+    height: 12px;
+    background: #444;
+    border-radius: 3px;
+    transform: translateY(-50%);
+    box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.15),
+        calc(100% + 6px) 0 0 0 #444;
 }
 
 .wire:hover:not(.cut) {
@@ -564,6 +643,15 @@ body {
     text-transform: uppercase;
     font-family: 'Courier New', monospace;
     position: relative;
+}
+
+.big-button::after {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    opacity: 0.6;
 }
 
 .big-button:hover {
@@ -622,7 +710,7 @@ body {
 .keypad-button {
     aspect-ratio: 1;
     font-size: 2.5em;
-    background: #333;
+    background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
     border: 3px solid #555;
     border-radius: 10px;
     color: #fff;
@@ -631,6 +719,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6), 0 3px 8px rgba(0, 0, 0, 0.5);
 }
 
 .keypad-button:hover:not(.pressed) {
@@ -653,6 +742,10 @@ body {
     padding: 20px;
     max-width: 250px;
     margin: 0 auto;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0%, rgba(20, 20, 20, 0.9) 70%);
+    border-radius: 50%;
+    border: 3px solid #2d2d2d;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .simon-button {
@@ -661,6 +754,7 @@ body {
     cursor: pointer;
     transition: all 0.1s;
     opacity: 0.6;
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.1), 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .simon-button:hover {
@@ -719,6 +813,7 @@ body {
     color: #0f0;
     text-shadow: 0 0 10px #0f0;
     border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
 }
 
 .word-buttons {
@@ -737,6 +832,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
 .word-button:hover {
@@ -760,6 +856,7 @@ body {
     color: #f80;
     text-shadow: 0 0 10px #f80;
     border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(255, 136, 0, 0.4);
 }
 
 .memory-buttons {
@@ -777,6 +874,7 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
 .memory-button:hover {
@@ -805,6 +903,7 @@ body {
     background: #333;
     border: 3px solid #666;
     transition: all 0.1s;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8), 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 .morse-light.on {
@@ -845,6 +944,10 @@ body {
     color: #0f0;
     min-width: 150px;
     text-align: center;
+    background: #000;
+    border: 2px solid #0f0;
+    border-radius: 4px;
+    padding: 6px 10px;
 }
 
 .morse-submit {
@@ -876,6 +979,8 @@ body {
     padding: 10px;
     background: #222;
     border-radius: 5px;
+    border: 1px solid #444;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
 .wire-visual {
