@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keep Talking and Nobody Explodes - Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Main Menu -->
+        <div id="main-menu" class="screen active">
+            <h1>Keep Talking and Nobody Explodes</h1>
+            <div class="menu-buttons">
+                <button id="start-game" class="menu-btn">Start Defusal</button>
+                <button id="view-manual" class="menu-btn">View Manual</button>
+                <button id="settings-btn" class="menu-btn">Settings</button>
+            </div>
+            <div class="difficulty-selector">
+                <h3>Select Difficulty:</h3>
+                <select id="difficulty">
+                    <option value="easy">Easy (3 minutes, 3-4 modules)</option>
+                    <option value="medium" selected>Medium (4 minutes, 5-6 modules)</option>
+                    <option value="hard">Hard (5 minutes, 7-8 modules)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-screen" class="screen">
+            <h2>Settings</h2>
+            <div class="settings-content">
+                <label>
+                    <input type="checkbox" id="sound-toggle" checked> Sound Effects
+                </label>
+                <label>
+                    <input type="checkbox" id="music-toggle" checked> Background Music
+                </label>
+            </div>
+            <button id="back-from-settings" class="menu-btn">Back</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div id="bomb-container">
+                <div id="bomb-header">
+                    <div id="timer-display">5:00</div>
+                    <div id="strikes-display">
+                        <span class="strike">✓</span>
+                        <span class="strike">✓</span>
+                        <span class="strike">✓</span>
+                    </div>
+                    <div id="serial-number">SN: AB1CD2</div>
+                </div>
+                <div id="bomb-modules"></div>
+                <div id="bomb-footer">
+                    <button id="pause-game" class="control-btn">Pause</button>
+                    <button id="quit-game" class="control-btn">Quit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Screen -->
+        <div id="manual-screen" class="screen">
+            <div id="manual-container">
+                <h2>Bomb Defusal Manual</h2>
+                <div id="manual-nav">
+                    <button class="manual-nav-btn" data-module="introduction">Introduction</button>
+                    <button class="manual-nav-btn" data-module="wires">Simple Wires</button>
+                    <button class="manual-nav-btn" data-module="button">The Button</button>
+                    <button class="manual-nav-btn" data-module="keypads">Keypads</button>
+                    <button class="manual-nav-btn" data-module="simon">Simon Says</button>
+                    <button class="manual-nav-btn" data-module="whosonfirst">Who's On First</button>
+                    <button class="manual-nav-btn" data-module="memory">Memory</button>
+                    <button class="manual-nav-btn" data-module="morse">Morse Code</button>
+                    <button class="manual-nav-btn" data-module="wires-complex">Complicated Wires</button>
+                </div>
+                <div id="manual-content">
+                    <div class="manual-page active" data-page="introduction">
+                        <h3>Welcome to Bomb Defusal</h3>
+                        <p>You are the defuser. Your job is to defuse the bomb before time runs out.</p>
+                        <p>Your partner(s) are the experts. They have this manual but cannot see the bomb.</p>
+                        <p><strong>Rules:</strong></p>
+                        <ul>
+                            <li>Describe what you see to your experts</li>
+                            <li>Listen carefully to their instructions</li>
+                            <li>You get 3 strikes before the bomb explodes</li>
+                            <li>Each module must be solved correctly</li>
+                            <li>The serial number is important for many modules</li>
+                        </ul>
+                        <p><strong>Serial Number:</strong> Located on the bomb, format: 2 letters, 1 number, 2 letters, 1 number</p>
+                    </div>
+                    
+                    <div class="manual-page" data-page="wires">
+                        <h3>Simple Wires Module</h3>
+                        <p>This module has 3-6 wires. Cut the correct wire based on the rules below:</p>
+                        
+                        <h4>3 Wires:</h4>
+                        <ul>
+                            <li>If there are no red wires, cut the second wire</li>
+                            <li>Otherwise, if the last wire is white, cut the last wire</li>
+                            <li>Otherwise, if there is more than one blue wire, cut the last blue wire</li>
+                            <li>Otherwise, cut the last wire</li>
+                        </ul>
+                        
+                        <h4>4 Wires:</h4>
+                        <ul>
+                            <li>If there is more than one red wire and the last digit of the serial number is odd, cut the last red wire</li>
+                            <li>Otherwise, if the last wire is yellow and there are no red wires, cut the first wire</li>
+                            <li>Otherwise, if there is exactly one blue wire, cut the first wire</li>
+                            <li>Otherwise, if there is more than one yellow wire, cut the last wire</li>
+                            <li>Otherwise, cut the second wire</li>
+                        </ul>
+                        
+                        <h4>5 Wires:</h4>
+                        <ul>
+                            <li>If the last wire is black and the last digit of the serial number is odd, cut the fourth wire</li>
+                            <li>Otherwise, if there is exactly one red wire and there is more than one yellow wire, cut the first wire</li>
+                            <li>Otherwise, if there are no black wires, cut the second wire</li>
+                            <li>Otherwise, cut the first wire</li>
+                        </ul>
+                        
+                        <h4>6 Wires:</h4>
+                        <ul>
+                            <li>If there are no yellow wires and the last digit of the serial number is odd, cut the third wire</li>
+                            <li>Otherwise, if there is exactly one yellow wire and there is more than one white wire, cut the fourth wire</li>
+                            <li>Otherwise, if there are no red wires, cut the last wire</li>
+                            <li>Otherwise, cut the fourth wire</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="manual-page" data-page="button">
+                        <h3>The Button Module</h3>
+                        <p>A large button with text and color. Follow these rules:</p>
+                        
+                        <h4>Step 1: Should you hold or tap?</h4>
+                        <ul>
+                            <li>If button is blue and says "Abort", HOLD the button</li>
+                            <li>If there is more than 1 battery and button says "Detonate", TAP the button</li>
+                            <li>If button is white and there is a lit indicator with label CAR, HOLD the button</li>
+                            <li>If there are more than 2 batteries and there is a lit indicator with label FRK, TAP the button</li>
+                            <li>If button is yellow, HOLD the button</li>
+                            <li>If button is red and says "Hold", TAP the button</li>
+                            <li>Otherwise, HOLD the button</li>
+                        </ul>
+                        
+                        <h4>Step 2: If you're holding, when to release?</h4>
+                        <p>When holding, a colored strip will appear. Release based on the strip color:</p>
+                        <ul>
+                            <li>Blue strip: Release when timer has a 4 in any position</li>
+                            <li>White strip: Release when timer has a 1 in any position</li>
+                            <li>Yellow strip: Release when timer has a 5 in any position</li>
+                            <li>Other color: Release when timer has a 1 in any position</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="manual-page" data-page="keypads">
+                        <h3>Keypads Module</h3>
+                        <p>Press the 4 symbols in the correct order based on their column.</p>
+                        <p>Find which column contains all 4 symbols on your bomb, then press them in order from top to bottom as shown in that column:</p>
+                        
+                        <div class="keypad-columns">
+                            <div class="keypad-col">
+                                <strong>Column 1:</strong>
+                                <ol>
+                                    <li>Ϙ (balloon)</li>
+                                    <li>Ѧ (A with T)</li>
+                                    <li>λ (lambda)</li>
+                                    <li>Ѯ (lightning)</li>
+                                    <li>Ϗ (pitchfork)</li>
+                                    <li>Ͱ (H)</li>
+                                    <li>Ͽ (C backward)</li>
+                                </ol>
+                            </div>
+                            <div class="keypad-col">
+                                <strong>Column 2:</strong>
+                                <ol>
+                                    <li>Ӭ (E)</li>
+                                    <li>Ϙ (balloon)</li>
+                                    <li>Ͽ (C backward)</li>
+                                    <li>Җ (cursive)</li>
+                                    <li>Ϭ (star)</li>
+                                    <li>Ͱ (H)</li>
+                                    <li>Ѣ (question mark)</li>
+                                </ol>
+                            </div>
+                            <div class="keypad-col">
+                                <strong>Column 3:</strong>
+                                <ol>
+                                    <li>Ͼ (copyright)</li>
+                                    <li>Ѽ (W)</li>
+                                    <li>Җ (cursive)</li>
+                                    <li>Ҝ (double K)</li>
+                                    <li>Ѯ (lightning)</li>
+                                    <li>Ͱ (H)</li>
+                                    <li>Ѣ (question mark)</li>
+                                </ol>
+                            </div>
+                            <div class="keypad-col">
+                                <strong>Column 4:</strong>
+                                <ol>
+                                    <li>Ϭ (six)</li>
+                                    <li>Ҁ (paragraph)</li>
+                                    <li>Ͽ (C backward)</li>
+                                    <li>Ҝ (double K)</li>
+                                    <li>Ѣ (question mark)</li>
+                                    <li>Ͼ (smiley)</li>
+                                    <li>Ϭ (star)</li>
+                                </ol>
+                            </div>
+                            <div class="keypad-col">
+                                <strong>Column 5:</strong>
+                                <ol>
+                                    <li>Ϭ (pitchfork)</li>
+                                    <li>Ͼ (smiley)</li>
+                                    <li>Ͽ (bt)</li>
+                                    <li>Ҁ (C with dot)</li>
+                                    <li>Ҁ (paragraph)</li>
+                                    <li>Ѯ (dragon)</li>
+                                    <li>Ϭ (star)</li>
+                                </ol>
+                            </div>
+                            <div class="keypad-col">
+                                <strong>Column 6:</strong>
+                                <ol>
+                                    <li>Ϭ (six)</li>
+                                    <li>Ӭ (E)</li>
+                                    <li>Җ (cursive AE)</li>
+                                    <li>Ѧ (A with T)</li>
+                                    <li>Ϭ (pitchfork)</li>
+                                    <li>Ѯ (dragon)</li>
+                                    <li>Ѣ (question mark)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="manual-page" data-page="simon">
+                        <h3>Simon Says Module</h3>
+                        <p>The module will flash colors in a sequence. Repeat the sequence by pressing buttons.</p>
+                        <p>Use the table below to determine which button to press for each color.</p>
+                        <p><strong>Important:</strong> The sequence grows by 1 each stage. Repeat the entire sequence each time.</p>
+                        
+                        <h4>If NO strikes:</h4>
+                        <table class="simon-table">
+                            <tr><th>Flashes</th><th>Vowel in Serial</th><th>No Vowel</th></tr>
+                            <tr><td>Red</td><td>Blue</td><td>Blue</td></tr>
+                            <tr><td>Blue</td><td>Red</td><td>Yellow</td></tr>
+                            <tr><td>Green</td><td>Yellow</td><td>Green</td></tr>
+                            <tr><td>Yellow</td><td>Green</td><td>Red</td></tr>
+                        </table>
+                        
+                        <h4>If 1 strike:</h4>
+                        <table class="simon-table">
+                            <tr><th>Flashes</th><th>Vowel in Serial</th><th>No Vowel</th></tr>
+                            <tr><td>Red</td><td>Yellow</td><td>Red</td></tr>
+                            <tr><td>Blue</td><td>Green</td><td>Blue</td></tr>
+                            <tr><td>Green</td><td>Blue</td><td>Yellow</td></tr>
+                            <tr><td>Yellow</td><td>Red</td><td>Green</td></tr>
+                        </table>
+                        
+                        <h4>If 2 strikes:</h4>
+                        <table class="simon-table">
+                            <tr><th>Flashes</th><th>Vowel in Serial</th><th>No Vowel</th></tr>
+                            <tr><td>Red</td><td>Green</td><td>Yellow</td></tr>
+                            <tr><td>Blue</td><td>Red</td><td>Green</td></tr>
+                            <tr><td>Green</td><td>Yellow</td><td>Blue</td></tr>
+                            <tr><td>Yellow</td><td>Blue</td><td>Red</td></tr>
+                        </table>
+                    </div>
+                    
+                    <div class="manual-page" data-page="whosonfirst">
+                        <h3>Who's On First Module</h3>
+                        <p>Two stages: Read the display, then press the correct button.</p>
+                        
+                        <h4>Step 1: Read the display word, find button position to read:</h4>
+                        <ul>
+                            <li>"YES", "NOTHING", "LED", "LEAD" → Middle Left</li>
+                            <li>"NO", "BLANK", "C", "OKAY", "YOU", "YOU ARE" → Bottom Left</li>
+                            <li>"UR", "FIRST", "WHAT?" → Top Right</li>
+                            <li>"YOU'RE", "YOUR", "PRESS" → Middle Right</li>
+                            <li>"REED", "LEED", "THEY ARE" → Bottom Right</li>
+                            <li>"DISPLAY", "SAYS", "HOLD ON", "THEY'RE", "THERE", "SEE" → Top Left</li>
+                        </ul>
+                        
+                        <h4>Step 2: Press first button in list that appears:</h4>
+                        <ul>
+                            <li><strong>READY:</strong> YES, OKAY, WHAT, MIDDLE, LEFT, PRESS, RIGHT, BLANK, READY</li>
+                            <li><strong>FIRST:</strong> LEFT, OKAY, YES, MIDDLE, NO, RIGHT, NOTHING, UHHH, WAIT, READY, BLANK, WHAT, PRESS, FIRST</li>
+                            <li><strong>NO:</strong> BLANK, UHHH, WAIT, FIRST, WHAT, READY, RIGHT, YES, NOTHING, LEFT, PRESS, OKAY, NO</li>
+                            <li><strong>BLANK:</strong> WAIT, RIGHT, OKAY, MIDDLE, BLANK</li>
+                            <li><strong>NOTHING:</strong> UHHH, RIGHT, OKAY, MIDDLE, YES, BLANK, NO, PRESS, LEFT, WHAT, WAIT, FIRST, NOTHING</li>
+                            <li><strong>YES:</strong> OKAY, RIGHT, UHHH, MIDDLE, FIRST, WHAT, PRESS, READY, NOTHING, YES</li>
+                            <li><strong>WHAT:</strong> UHHH, WHAT</li>
+                            <li><strong>UHHH:</strong> READY, NOTHING, LEFT, WHAT, OKAY, YES, RIGHT, NO, PRESS, BLANK, UHHH</li>
+                            <li><strong>LEFT:</strong> RIGHT, LEFT</li>
+                            <li><strong>RIGHT:</strong> YES, NOTHING, READY, PRESS, NO, WAIT, WHAT, RIGHT</li>
+                            <li><strong>MIDDLE:</strong> BLANK, READY, OKAY, WHAT, NOTHING, PRESS, NO, WAIT, LEFT, MIDDLE</li>
+                            <li><strong>OKAY:</strong> MIDDLE, NO, FIRST, YES, UHHH, NOTHING, WAIT, OKAY</li>
+                            <li><strong>WAIT:</strong> UHHH, NO, BLANK, OKAY, YES, LEFT, FIRST, PRESS, WHAT, WAIT</li>
+                            <li><strong>PRESS:</strong> RIGHT, MIDDLE, YES, READY, PRESS</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="manual-page" data-page="memory">
+                        <h3>Memory Module</h3>
+                        <p>Remember button positions and labels across 5 stages.</p>
+                        
+                        <h4>Stage 1:</h4>
+                        <ul>
+                            <li>Display 1 or 2: Press button in position 2</li>
+                            <li>Display 3: Press button in position 3</li>
+                            <li>Display 4: Press button in position 4</li>
+                        </ul>
+                        
+                        <h4>Stage 2:</h4>
+                        <ul>
+                            <li>Display 1: Press button labeled "4"</li>
+                            <li>Display 2 or 4: Press button in same position as Stage 1</li>
+                            <li>Display 3: Press button in position 1</li>
+                        </ul>
+                        
+                        <h4>Stage 3:</h4>
+                        <ul>
+                            <li>Display 1: Press button with same label as Stage 2</li>
+                            <li>Display 2: Press button with same label as Stage 1</li>
+                            <li>Display 3: Press button in position 3</li>
+                            <li>Display 4: Press button labeled "4"</li>
+                        </ul>
+                        
+                        <h4>Stage 4:</h4>
+                        <ul>
+                            <li>Display 1: Press button in same position as Stage 1</li>
+                            <li>Display 2: Press button in position 1</li>
+                            <li>Display 3 or 4: Press button in same position as Stage 2</li>
+                        </ul>
+                        
+                        <h4>Stage 5:</h4>
+                        <ul>
+                            <li>Display 1: Press button with same label as Stage 1</li>
+                            <li>Display 2: Press button with same label as Stage 2</li>
+                            <li>Display 3: Press button with same label as Stage 4</li>
+                            <li>Display 4: Press button with same label as Stage 3</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="manual-page" data-page="morse">
+                        <h3>Morse Code Module</h3>
+                        <p>A light flashes morse code. Decode the word and set frequency to respond.</p>
+                        
+                        <h4>Morse Code Reference:</h4>
+                        <div class="morse-reference">
+                            <p>A: ·−  B: −···  C: −·−·  D: −··  E: ·  F: ··−·  G: −−·  H: ····</p>
+                            <p>I: ··  J: ·−−−  K: −·−  L: ·−··  M: −−  N: −·  O: −−−  P: ·−−·</p>
+                            <p>Q: −−·−  R: ·−·  S: ···  T: −  U: ··−  V: ···−  W: ·−−  X: −··−</p>
+                            <p>Y: −·−−  Z: −−··</p>
+                        </div>
+                        
+                        <h4>Possible Words and Frequencies:</h4>
+                        <ul>
+                            <li>SHELL → 3.505 MHz</li>
+                            <li>HALLS → 3.515 MHz</li>
+                            <li>SLICK → 3.522 MHz</li>
+                            <li>TRICK → 3.532 MHz</li>
+                            <li>BOXES → 3.535 MHz</li>
+                            <li>LEAKS → 3.542 MHz</li>
+                            <li>STROBE → 3.545 MHz</li>
+                            <li>BISTRO → 3.552 MHz</li>
+                            <li>FLICK → 3.555 MHz</li>
+                            <li>BOMBS → 3.565 MHz</li>
+                            <li>BREAK → 3.572 MHz</li>
+                            <li>BRICK → 3.575 MHz</li>
+                            <li>STEAK → 3.582 MHz</li>
+                            <li>STING → 3.592 MHz</li>
+                            <li>VECTOR → 3.595 MHz</li>
+                            <li>BEATS → 3.600 MHz</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="manual-page" data-page="wires-complex">
+                        <h3>Complicated Wires Module</h3>
+                        <p>Each wire has properties: Color (Red/Blue/White), LED (on/off), Star symbol (present/absent)</p>
+                        <p>Use table to determine action:</p>
+                        
+                        <table class="complex-wires-table">
+                            <tr>
+                                <th>Wire Properties</th>
+                                <th>Action</th>
+                            </tr>
+                            <tr>
+                                <td>No color, no LED, no star</td>
+                                <td>Cut</td>
+                            </tr>
+                            <tr>
+                                <td>No color, no LED, star</td>
+                                <td>Don't cut</td>
+                            </tr>
+                            <tr>
+                                <td>No color, LED, no star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>No color, LED, star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>Red only, no LED, no star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>Red only, no LED, star</td>
+                                <td>Cut</td>
+                            </tr>
+                            <tr>
+                                <td>Red only, LED, no star</td>
+                                <td>Cut if parallel port</td>
+                            </tr>
+                            <tr>
+                                <td>Red only, LED, star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>Blue only, no LED, no star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>Blue only, no LED, star</td>
+                                <td>Don't cut</td>
+                            </tr>
+                            <tr>
+                                <td>Blue only, LED, no star</td>
+                                <td>Cut if parallel port</td>
+                            </tr>
+                            <tr>
+                                <td>Blue only, LED, star</td>
+                                <td>Cut if parallel port</td>
+                            </tr>
+                            <tr>
+                                <td>Red+Blue, no LED, no star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>Red+Blue, no LED, star</td>
+                                <td>Cut if serial # even</td>
+                            </tr>
+                            <tr>
+                                <td>Red+Blue, LED, no star</td>
+                                <td>Cut if batteries ≥ 2</td>
+                            </tr>
+                            <tr>
+                                <td>Red+Blue, LED, star</td>
+                                <td>Don't cut</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button id="back-from-manual" class="menu-btn">Back to Menu</button>
+            </div>
+        </div>
+
+        <!-- Win Screen -->
+        <div id="win-screen" class="screen">
+            <h1 class="success">BOMB DEFUSED!</h1>
+            <p id="win-time">Time Remaining: 0:00</p>
+            <button id="play-again-win" class="menu-btn">Play Again</button>
+            <button id="menu-from-win" class="menu-btn">Main Menu</button>
+        </div>
+
+        <!-- Lose Screen -->
+        <div id="lose-screen" class="screen">
+            <h1 class="failure">EXPLOSION!</h1>
+            <p id="lose-reason">The bomb exploded!</p>
+            <button id="play-again-lose" class="menu-btn">Try Again</button>
+            <button id="menu-from-lose" class="menu-btn">Main Menu</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
