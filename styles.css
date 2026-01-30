@@ -331,6 +331,9 @@ body {
     transform-style: preserve-3d;
     border-radius: 12px;
     pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0s 0.3s;
     background: linear-gradient(145deg, rgba(40, 40, 40, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7), 0 20px 35px rgba(0, 0, 0, 0.55);
 }
@@ -360,8 +363,10 @@ body {
 }
 
 .bomb-face.active {
-    animation: fadeIn 0.3s;
     pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s, visibility 0s;
 }
 
 .bomb-face[data-view="front"] {
