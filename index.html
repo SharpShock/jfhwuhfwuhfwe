@@ -50,9 +50,52 @@
                         <span class="strike">✓</span>
                         <span class="strike">✓</span>
                     </div>
-                    <div id="serial-number">SN: AB1CD2</div>
+                    <div id="bomb-view-indicator">
+                        <span class="view-label">Bomb View</span>
+                        <span id="bomb-view-name">Front</span>
+                    </div>
                 </div>
-                <div id="bomb-modules"></div>
+                <div id="bomb-body">
+                    <div class="bomb-face active" data-view="front">
+                        <div id="bomb-modules"></div>
+                    </div>
+                    <div class="bomb-face" data-view="left">
+                        <div class="edgework-panel">
+                            <div class="panel-title">Battery Pack</div>
+                            <div id="battery-pack" class="battery-pack"></div>
+                            <div id="battery-count" class="panel-note"></div>
+                        </div>
+                    </div>
+                    <div class="bomb-face" data-view="right">
+                        <div class="edgework-panel">
+                            <div class="panel-title">Indicators</div>
+                            <div id="indicator-lights" class="indicator-lights"></div>
+                            <div class="panel-note">Note lit indicators for specific modules.</div>
+                        </div>
+                    </div>
+                    <div class="bomb-face" data-view="back">
+                        <div class="edgework-panel">
+                            <div class="panel-title">Serial Plate</div>
+                            <div class="serial-plate">
+                                <div class="serial-label">Serial Number</div>
+                                <div id="serial-number">AB1CD2</div>
+                            </div>
+                            <div class="panel-note">Even/odd last digit matters.</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="bomb-rotation-controls">
+                    <div class="rotation-label">Rotate Bomb</div>
+                    <div class="rotation-pad">
+                        <button class="rotate-btn" data-view="front" aria-label="View front">▲</button>
+                        <div class="rotation-row">
+                            <button class="rotate-btn" data-view="left" aria-label="View left">◄</button>
+                            <button class="rotate-btn" data-view="back" aria-label="View back">▼</button>
+                            <button class="rotate-btn" data-view="right" aria-label="View right">►</button>
+                        </div>
+                    </div>
+                    <div class="rotation-note">Arrow keys work too</div>
+                </div>
                 <div id="bomb-footer">
                     <button id="pause-game" class="control-btn">Pause</button>
                     <button id="quit-game" class="control-btn">Quit</button>
@@ -65,7 +108,8 @@
             <div id="manual-container">
                 <h2>Bomb Defusal Manual</h2>
                 <div id="manual-nav">
-                    <button class="manual-nav-btn" data-module="introduction">Introduction</button>
+                    <button class="manual-nav-btn active" data-module="introduction">Introduction</button>
+                    <button class="manual-nav-btn" data-module="edgework">Bomb Casing</button>
                     <button class="manual-nav-btn" data-module="wires">Simple Wires</button>
                     <button class="manual-nav-btn" data-module="button">The Button</button>
                     <button class="manual-nav-btn" data-module="keypads">Keypads</button>
@@ -77,9 +121,9 @@
                 </div>
                 <div id="manual-content">
                     <div class="manual-page active" data-page="introduction">
-                        <h3>Welcome to Bomb Defusal</h3>
-                        <p>You are the defuser. Your job is to defuse the bomb before time runs out.</p>
-                        <p>Your partner(s) are the experts. They have this manual but cannot see the bomb.</p>
+                        <h3>Introduction</h3>
+                        <p>Welcome to the dangerous and challenging world of bomb defusal.</p>
+                        <p>Study this manual carefully; you are the Defuser, and your partners are the Experts.</p>
                         <p><strong>Rules:</strong></p>
                         <ul>
                             <li>Describe what you see to your experts</li>
@@ -88,7 +132,26 @@
                             <li>Each module must be solved correctly</li>
                             <li>The serial number is important for many modules</li>
                         </ul>
-                        <p><strong>Serial Number:</strong> Located on the bomb, format: 2 letters, 1 number, 2 letters, 1 number</p>
+                        <p><strong>Serial Number:</strong> Located on the back of the bomb, format: 2 letters, 1 number, 2 letters, 1 number.</p>
+                        <p><strong>Edgework:</strong> Batteries and indicator lights are found on the bomb casing and affect solutions.</p>
+                    </div>
+
+                    <div class="manual-page" data-page="edgework">
+                        <h3>Bomb Casing &amp; Edgework</h3>
+                        <p>Rotate the bomb to inspect the casing. Many modules reference the edgework details.</p>
+
+                        <h4>Batteries</h4>
+                        <p>Count the number of batteries on the left side. More batteries can change button rules.</p>
+
+                        <h4>Indicators</h4>
+                        <p>Indicator lights show short labels. Each indicator can be lit or unlit.</p>
+                        <ul>
+                            <li><strong>CAR</strong> and <strong>FRK</strong> are especially important for the Button module.</li>
+                            <li>Always report both the label and whether it is lit.</li>
+                        </ul>
+
+                        <h4>Serial Number Plate</h4>
+                        <p>The serial number is on the back. The last digit determines even/odd conditions.</p>
                     </div>
                     
                     <div class="manual-page" data-page="wires">
