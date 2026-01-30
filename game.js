@@ -180,9 +180,13 @@ function renderEdgework() {
 function updateBombView(view) {
     gameState.currentView = view;
     const viewName = document.getElementById('bomb-view-name');
+    const bombCube = document.getElementById('bomb-cube');
     if (viewName) {
         const labels = { front: 'Front', left: 'Left', right: 'Right', back: 'Back' };
         viewName.textContent = labels[view] || 'Front';
+    }
+    if (bombCube) {
+        bombCube.dataset.view = view;
     }
 
     document.querySelectorAll('.bomb-face').forEach(face => {

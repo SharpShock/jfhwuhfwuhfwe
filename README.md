@@ -31,6 +31,7 @@ Keep Talking and Nobody Explodes is a cooperative game where one player (the Def
 
 ### Visual Features
 - Enhanced bomb casing with multi-panel views
+- 3D bomb presentation with depth, lighting, and smooth rotation
 - Arrow key bomb rotation to inspect edgework
 - Smooth animations and transitions
 - Visual feedback for correct/incorrect actions
