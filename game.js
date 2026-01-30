@@ -63,7 +63,11 @@ function initializeEventListeners() {
             ArrowLeft: 'left',
             ArrowRight: 'right'
         };
+        if (gameState.currentScreen !== 'game-screen') {
+            return;
+        }
         if (keyMap[event.key]) {
+            event.preventDefault();
             updateBombView(keyMap[event.key]);
         }
     });
@@ -122,10 +126,15 @@ function generateSerialNumber() {
 }
 
 function generateEdgework() {
-    const batteryCount = Math.floor(Math.random() * 3) + 1;
+    const batteryCount = Math.floor(Math.random() * 4) + 1;
     const indicatorPool = ['SND', 'CLR', 'CAR', 'IND', 'FRQ', 'SIG', 'FRK', 'MSA'];
     const indicatorCount = Math.floor(Math.random() * 3) + 2;
-    const selected = [...indicatorPool].sort(() => Math.random() - 0.5).slice(0, indicatorCount);
+    const shuffledIndicators = [...indicatorPool];
+    for (let i = shuffledIndicators.length - 1; i > 0; i--) {
+        const swapIndex = Math.floor(Math.random() * (i + 1));
+        [shuffledIndicators[i], shuffledIndicators[swapIndex]] = [shuffledIndicators[swapIndex], shuffledIndicators[i]];
+    }
+    const selected = shuffledIndicators.slice(0, indicatorCount);
 
     gameState.batteryCount = batteryCount;
     gameState.indicators = selected.map(label => ({
