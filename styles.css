@@ -363,7 +363,6 @@ body {
 }
 
 .bomb-face.active {
-    animation: fadeIn 0.3s;
     pointer-events: auto;
     opacity: 1;
     visibility: visible;
