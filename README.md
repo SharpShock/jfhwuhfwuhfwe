@@ -22,14 +22,16 @@ Keep Talking and Nobody Explodes is a cooperative game where one player (the Def
 - **3 Difficulty Levels**: Easy (3-4 modules), Medium (5-6 modules), Hard (7-8 modules)
 - **Dynamic Timer**: Countdown timer that changes color as time runs out
 - **Strike System**: 3 strikes allowed before game over
-- **Serial Number**: Randomly generated for each game, affects module solutions
-- **Comprehensive Manual**: Detailed instruction manual for each module
+- **Bomb Edgework**: Batteries, serial plate, and indicator lights shown on the bomb casing
+- **Serial Number**: Randomly generated and shown on the back panel, affects module solutions
+- **Comprehensive Manual**: Detailed instruction manual with bomb casing details
 - **Sound Effects**: Audio feedback for actions and events
 - **Responsive Design**: Works on desktop and mobile devices
 - **Win/Lose Screens**: Clear feedback on game completion
 
 ### Visual Features
-- Retro bomb aesthetic with neon colors
+- Enhanced bomb casing with multi-panel views
+- Arrow key bomb rotation to inspect edgework
 - Smooth animations and transitions
 - Visual feedback for correct/incorrect actions
 - Module highlighting when solved

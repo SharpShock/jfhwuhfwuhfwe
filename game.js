@@ -12,13 +12,17 @@ const gameState = {
     serialNumber: '',
     soundEnabled: true,
     musicEnabled: true,
-    isPaused: false
+    isPaused: false,
+    currentView: 'front',
+    batteryCount: 0,
+    indicators: []
 };
 
 // Initialize game
 document.addEventListener('DOMContentLoaded', () => {
     initializeEventListeners();
     generateSerialNumber();
+    updateBombView('front');
 });
 
 // Event Listeners
@@ -43,6 +47,30 @@ function initializeEventListeners() {
     // Game controls
     document.getElementById('pause-game').addEventListener('click', togglePause);
     document.getElementById('quit-game').addEventListener('click', quitGame);
+
+    // Bomb rotation controls
+    document.querySelectorAll('.rotate-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+            updateBombView(view);
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const keyMap = {
+            ArrowUp: 'front',
+            ArrowDown: 'back',
+            ArrowLeft: 'left',
+            ArrowRight: 'right'
+        };
+        if (gameState.currentScreen !== 'game-screen') {
+            return;
+        }
+        if (keyMap[event.key]) {
+            event.preventDefault();
+            updateBombView(keyMap[event.key]);
+        }
+    });
     
     // Manual
     document.getElementById('back-from-manual').addEventListener('click', () => showScreen('main-menu'));
@@ -91,7 +119,83 @@ function generateSerialNumber() {
     serial += numbers[Math.floor(Math.random() * numbers.length)];
     
     gameState.serialNumber = serial;
-    document.getElementById('serial-number').textContent = `SN: ${serial}`;
+    const serialElement = document.getElementById('serial-number');
+    if (serialElement) {
+        serialElement.textContent = serial;
+    }
+}
+
+function generateEdgework() {
+    const batteryCount = Math.floor(Math.random() * 4) + 1;
+    const indicatorPool = ['SND', 'CLR', 'CAR', 'IND', 'FRQ', 'SIG', 'FRK', 'MSA'];
+    const indicatorCount = Math.floor(Math.random() * 3) + 2;
+    const shuffledIndicators = [...indicatorPool];
+    for (let i = shuffledIndicators.length - 1; i > 0; i--) {
+        const swapIndex = Math.floor(Math.random() * (i + 1));
+        [shuffledIndicators[i], shuffledIndicators[swapIndex]] = [shuffledIndicators[swapIndex], shuffledIndicators[i]];
+    }
+    const selected = shuffledIndicators.slice(0, indicatorCount);
+
+    gameState.batteryCount = batteryCount;
+    gameState.indicators = selected.map(label => ({
+        label,
+        lit: Math.random() > 0.5
+    }));
+
+    renderEdgework();
+}
+
+function renderEdgework() {
+    const batteryPack = document.getElementById('battery-pack');
+    const batteryCount = document.getElementById('battery-count');
+    if (batteryPack) {
+        batteryPack.innerHTML = '';
+        for (let i = 0; i < gameState.batteryCount; i++) {
+            const battery = document.createElement('div');
+            battery.className = 'battery';
+            batteryPack.appendChild(battery);
+        }
+    }
+    if (batteryCount) {
+        batteryCount.textContent = gameState.batteryCount === 1
+            ? '1 battery'
+            : `${gameState.batteryCount} batteries`;
+    }
+
+    const indicatorContainer = document.getElementById('indicator-lights');
+    if (indicatorContainer) {
+        indicatorContainer.innerHTML = '';
+        gameState.indicators.forEach(indicator => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'indicator';
+            wrapper.innerHTML = `
+                <div class="indicator-light ${indicator.lit ? 'lit' : ''}"></div>
+                <div class="indicator-label">${indicator.label}</div>
+            `;
+            indicatorContainer.appendChild(wrapper);
+        });
+    }
+}
+
+function updateBombView(view) {
+    gameState.currentView = view;
+    const viewName = document.getElementById('bomb-view-name');
+    if (viewName) {
+        const labels = { front: 'Front', left: 'Left', right: 'Right', back: 'Back' };
+        viewName.textContent = labels[view] || 'Front';
+    }
+
+    document.querySelectorAll('.bomb-face').forEach(face => {
+        face.classList.toggle('active', face.dataset.view === view);
+    });
+
+    document.querySelectorAll('.rotate-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+    });
+}
+
+function hasLitIndicator(label) {
+    return gameState.indicators.some(indicator => indicator.label === label && indicator.lit);
 }
 
 // Game Start
@@ -121,6 +225,8 @@ function startGame() {
     
     // Generate new serial number
     generateSerialNumber();
+    generateEdgework();
+    updateBombView('front');
     
     // Create modules
     createModules();
@@ -445,10 +551,10 @@ function createButtonModule(id) {
 }
 
 function calculateButtonAction(color, label) {
-    // Simplified button rules (assuming 2+ batteries and no special indicators for simplicity)
     if (color === 'blue' && label === 'Abort') return true;
-    if (label === 'Detonate') return false; // Assuming 2+ batteries
-    if (color === 'white') return true; // Assuming CAR indicator
+    if (label === 'Detonate' && gameState.batteryCount > 1) return false;
+    if (color === 'white' && hasLitIndicator('CAR')) return true;
+    if (gameState.batteryCount > 2 && hasLitIndicator('FRK')) return false;
     if (color === 'yellow') return true;
     if (color === 'red' && label === 'Hold') return false;
     return true;
@@ -1016,7 +1122,7 @@ function shouldCutComplexWire(wire) {
     if (!wire.red && wire.blue && !wire.led && wire.star) return false;
     if (!wire.red && wire.blue && wire.led) return true; // Simplified
     if (wire.red && wire.blue && !wire.led) return isEven;
-    if (wire.red && wire.blue && wire.led && !wire.star) return true; // Simplified: assuming 2+ batteries
+    if (wire.red && wire.blue && wire.led && !wire.star) return gameState.batteryCount >= 2;
     if (wire.red && wire.blue && wire.led && wire.star) return false;
     
     return false;
